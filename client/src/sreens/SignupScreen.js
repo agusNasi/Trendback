@@ -9,22 +9,29 @@ import { Store } from '../Store.js';
 import { toast } from 'react-toastify';
 import { getError } from '../utils.js';
 
-export default function SigninScreen() {
+export default function SignupScreen() {
   const navigate = useNavigate();
   const { search } = useLocation();
   const redirectInUrl = new URLSearchParams(search).get('redirect');
   const redirect = redirectInUrl ? redirectInUrl : '/';
 
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    if (password !== confirmPassword) {
+      toast.error('Las contraseñas no son iguales');
+      return;
+    }
     try {
-      const { data } = await Axios.post('/api/users/signin', {
+      const { data } = await Axios.post('/api/users/signup', {
+        name,
         email,
         password,
       });
@@ -44,10 +51,18 @@ export default function SigninScreen() {
   return (
     <Container className="small-container">
       <Helmet>
-        <title>Iniciar Sesion</title>
+        <title>Crear Cuenta</title>
       </Helmet>
-      <h1 className="my-3">Iniciar Sesion</h1>
+      <h1 className="my-3">Crear Cuenta</h1>
       <Form onSubmit={submitHandler}>
+        <Form.Group className="mb-3" controlId="name">
+          <Form.Label>Nombre</Form.Label>
+          <Form.Control
+            type="name"
+            required
+            onChange={(e) => setName(e.target.value)}
+          />
+        </Form.Group>
         <Form.Group className="mb-3" controlId="email">
           <Form.Label>Email</Form.Label>
           <Form.Control
@@ -64,12 +79,20 @@ export default function SigninScreen() {
             onChange={(e) => setPassword(e.target.value)}
           />
         </Form.Group>
+        <Form.Group className="mb-3" controlId="confirmPassword">
+          <Form.Label>Confirmar Contraseña</Form.Label>
+          <Form.Control
+            type="password"
+            required
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          />
+        </Form.Group>
         <div className="mb-3">
-          <Button type="submit">Iniciar Sesion</Button>
+          <Button type="submit">Crear cuenta</Button>
         </div>
         <div className="mb-3">
-          ¿No tienes Cuenta?{' '}
-          <Link to={`/signup?redirect=${redirect}`}>Crear cuenta</Link>
+          Ya tienes una cuenta?{' '}
+          <Link to={`/signin?redirect=${redirect}`}>Iniciar Sesion</Link>
         </div>
       </Form>
     </Container>
