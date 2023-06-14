@@ -9,6 +9,8 @@ import orderRouter from './routers/orderRoutes.js';
 
 dotenv.config();
 
+//Connect to DB
+
 mongoose
   .connect(process.env.MONGODB_URI)
   .then(() => {
