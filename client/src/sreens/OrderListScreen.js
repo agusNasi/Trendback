@@ -103,12 +103,12 @@ export default function OrderListScreen() {
           <thead>
             <tr>
               <th>ID</th>
-              <th>USER</th>
-              <th>DATE</th>
+              <th>USUARIO</th>
+              <th>FECHA</th>
               <th>TOTAL</th>
-              <th>PAID</th>
-              <th>DELIVERED</th>
-              <th>ACTIONS</th>
+              <th>PAGO</th>
+              <th>ENVIADO</th>
+              <th>ACCIONES</th>
             </tr>
           </thead>
           <tbody>
@@ -132,7 +132,7 @@ export default function OrderListScreen() {
                       navigate(`/order/${order._id}`);
                     }}
                   >
-                    Details
+                    Detalles
                   </Button>
                   &nbsp;
                   <Button
@@ -140,7 +140,7 @@ export default function OrderListScreen() {
                     variant="light"
                     onClick={() => deleteHandler(order)}
                   >
-                    Delete
+                    Eliminar
                   </Button>
                 </td>
               </tr>
