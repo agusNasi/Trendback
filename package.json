@@ -2,7 +2,7 @@
   "name": "ecomerce-mern-stack",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "backend/server.js",
   "scripts": {
     "build": "cd backend && npm install && cd ../client && npm install && npm run build",
     "start": "node backend/server.js",

@@ -138,7 +138,7 @@ export default function PlaceOrderScreen() {
                   </ListGroup.Item>
                 ))}
               </ListGroup>
-              <Link to="/cart">Edit</Link>
+              <Link to="/cart">Editar</Link>
             </Card.Body>
           </Card>
         </Col>
