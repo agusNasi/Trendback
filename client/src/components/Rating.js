@@ -1,4 +1,4 @@
-export default function Rating(props) {
+function Rating(props) {
   const { rating, numReviews, caption } = props;
   return (
     <div className="rating">
@@ -11,7 +11,7 @@ export default function Rating(props) {
               ? 'fas fa-star-half-alt'
               : 'far fa-star'
           }
-        ></i>
+        />
       </span>
       <span>
         <i
@@ -22,7 +22,7 @@ export default function Rating(props) {
               ? 'fas fa-star-half-alt'
               : 'far fa-star'
           }
-        ></i>
+        />
       </span>
       <span>
         <i
@@ -33,7 +33,7 @@ export default function Rating(props) {
               ? 'fas fa-star-half-alt'
               : 'far fa-star'
           }
-        ></i>
+        />
       </span>
       <span>
         <i
@@ -44,7 +44,7 @@ export default function Rating(props) {
               ? 'fas fa-star-half-alt'
               : 'far fa-star'
           }
-        ></i>
+        />
       </span>
       <span>
         <i
@@ -55,13 +55,14 @@ export default function Rating(props) {
               ? 'fas fa-star-half-alt'
               : 'far fa-star'
           }
-        ></i>
+        />
       </span>
       {caption ? (
         <span>{caption}</span>
       ) : (
-        <span>{' ' + numReviews + ' reviews'}</span>
+        <span>{' ' + numReviews + ' reseñas'}</span>
       )}
     </div>
   );
 }
+export default Rating;

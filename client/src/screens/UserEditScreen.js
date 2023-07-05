@@ -82,7 +82,7 @@ export default function UserEditScreen() {
       dispatch({
         type: 'UPDATE_SUCCESS',
       });
-      toast.success('User updated successfully');
+      toast.success('Usuario actualizado exitosamente!');
       navigate('/admin/users');
     } catch (error) {
       toast.error(getError(error));
@@ -124,7 +124,7 @@ export default function UserEditScreen() {
             className="mb-3"
             type="checkbox"
             id="isAdmin"
-            label="Admin"
+            label="isAdmin"
             checked={isAdmin}
             onChange={(e) => setIsAdmin(e.target.checked)}
           />

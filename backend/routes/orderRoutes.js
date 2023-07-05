@@ -33,7 +33,7 @@ orderRouter.post(
     });
 
     const order = await newOrder.save();
-    res.status(201).send({ Message: 'Nueva orden creada', order });
+    res.status(201).send({ message: 'Nueva Orden Creada', order });
   })
 );
 
@@ -98,7 +98,7 @@ orderRouter.get(
     if (order) {
       res.send(order);
     } else {
-      res.status(404).send({ message: 'Orden no encontrada' });
+      res.status(404).send({ message: 'Orden no Encontrada' });
     }
   })
 );
@@ -112,9 +112,9 @@ orderRouter.put(
       order.isDelivered = true;
       order.deliveredAt = Date.now();
       await order.save();
-      res.send({ message: 'Order Delivered' });
+      res.send({ message: 'Orden Entregada' });
     } else {
-      res.status(404).send({ message: 'Order Not Found' });
+      res.status(404).send({ message: 'Orden no Encontrada' });
     }
   })
 );
@@ -123,7 +123,10 @@ orderRouter.put(
   '/:id/pay',
   isAuth,
   expressAsyncHandler(async (req, res) => {
-    const order = await Order.findById(req.params.id);
+    const order = await Order.findById(req.params.id).populate(
+      'user',
+      'email name'
+    );
     if (order) {
       order.isPaid = true;
       order.paidAt = Date.now();
@@ -149,7 +152,7 @@ orderRouter.delete(
   expressAsyncHandler(async (req, res) => {
     const order = await Order.findById(req.params.id);
     if (order) {
-      await order.deleteOne();
+      await order.remove();
       res.send({ message: 'Order Deleted' });
     } else {
       res.status(404).send({ message: 'Order Not Found' });

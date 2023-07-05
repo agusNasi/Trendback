@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -13,21 +13,18 @@ export default function ShippingAddressScreen() {
     userInfo,
     cart: { shippingAddress },
   } = state;
-
   const [fullName, setFullName] = useState(shippingAddress.fullName || '');
   const [address, setAddress] = useState(shippingAddress.address || '');
   const [city, setCity] = useState(shippingAddress.city || '');
   const [postalCode, setPostalCode] = useState(
     shippingAddress.postalCode || ''
   );
-  const [country, setCountry] = useState(shippingAddress.country || '');
-
   useEffect(() => {
     if (!userInfo) {
       navigate('/signin?redirect=/shipping');
     }
   }, [userInfo, navigate]);
-
+  const [country, setCountry] = useState(shippingAddress.country || '');
   const submitHandler = (e) => {
     e.preventDefault();
     ctxDispatch({
@@ -38,9 +35,9 @@ export default function ShippingAddressScreen() {
         city,
         postalCode,
         country,
+        location: shippingAddress.location,
       },
     });
-
     localStorage.setItem(
       'shippingAddress',
       JSON.stringify({
@@ -49,21 +46,24 @@ export default function ShippingAddressScreen() {
         city,
         postalCode,
         country,
+        location: shippingAddress.location,
       })
     );
     navigate('/payment');
   };
+
   return (
     <div>
       <Helmet>
         <title>Direccion de Envio</title>
       </Helmet>
+
       <CheckoutSteps step1 step2></CheckoutSteps>
       <div className="container small-container">
-        <h1 className="my-3">Direccion de Envio</h1>
+        <h1 className="my-3">Direccion de envio</h1>
         <Form onSubmit={submitHandler}>
           <Form.Group className="mb-3" controlId="fullName">
-            <Form.Label>Nombre completo</Form.Label>
+            <Form.Label>Nombre Completo</Form.Label>
             <Form.Control
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
@@ -71,7 +71,7 @@ export default function ShippingAddressScreen() {
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="address">
-            <Form.Label>Direccion de Entrega</Form.Label>
+            <Form.Label>Direccion de envio</Form.Label>
             <Form.Control
               value={address}
               onChange={(e) => setAddress(e.target.value)}

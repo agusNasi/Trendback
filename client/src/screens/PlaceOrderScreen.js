@@ -1,7 +1,7 @@
 import Axios from 'axios';
 import React, { useContext, useEffect, useReducer } from 'react';
-import CheckoutSteps from '../components/CheckoutSteps';
 import { Helmet } from 'react-helmet-async';
+import { Link, useNavigate } from 'react-router-dom';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
@@ -9,21 +9,18 @@ import Button from 'react-bootstrap/Button';
 import ListGroup from 'react-bootstrap/ListGroup';
 import { toast } from 'react-toastify';
 import { getError } from '../utils';
-import { Link, useNavigate } from 'react-router-dom';
 import { Store } from '../Store';
+import CheckoutSteps from '../components/CheckoutSteps';
 import LoadingBox from '../components/LoadingBox';
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case 'CREATE_REQUEST': {
+    case 'CREATE_REQUEST':
       return { ...state, loading: true };
-    }
-    case 'CREATE_SUCCESS': {
+    case 'CREATE_SUCCESS':
       return { ...state, loading: false };
-    }
-    case 'CREATE_FAIL': {
+    case 'CREATE_FAIL':
       return { ...state, loading: false };
-    }
     default:
       return state;
   }
@@ -50,6 +47,7 @@ export default function PlaceOrderScreen() {
   const placeOrderHandler = async () => {
     try {
       dispatch({ type: 'CREATE_REQUEST' });
+
       const { data } = await Axios.post(
         '/api/orders',
         {
@@ -71,9 +69,9 @@ export default function PlaceOrderScreen() {
       dispatch({ type: 'CREATE_SUCCESS' });
       localStorage.removeItem('cartItems');
       navigate(`/order/${data.order._id}`);
-    } catch (error) {
+    } catch (err) {
       dispatch({ type: 'CREATE_FAIL' });
-      toast.error(getError(error));
+      toast.error(getError(err));
     }
   };
 
@@ -97,9 +95,9 @@ export default function PlaceOrderScreen() {
               <Card.Title>Envio</Card.Title>
               <Card.Text>
                 <strong>Nombre:</strong> {cart.shippingAddress.fullName} <br />
-                <strong>Direccion de envio: </strong>{' '}
-                {cart.shippingAddress.address},{cart.shippingAddress.city},{' '}
-                {cart.shippingAddress.postalCode},{cart.shippingAddress.country}
+                <strong>Direccion: </strong> {cart.shippingAddress.address},
+                {cart.shippingAddress.city}, {cart.shippingAddress.postalCode},
+                {cart.shippingAddress.country}
               </Card.Text>
               <Link to="/shipping">Editar</Link>
             </Card.Body>
@@ -145,7 +143,7 @@ export default function PlaceOrderScreen() {
         <Col md={4}>
           <Card>
             <Card.Body>
-              <Card.Title>Orden Resumen</Card.Title>
+              <Card.Title>Resumen Orden</Card.Title>
               <ListGroup variant="flush">
                 <ListGroup.Item>
                   <Row>
@@ -182,7 +180,7 @@ export default function PlaceOrderScreen() {
                       onClick={placeOrderHandler}
                       disabled={cart.cartItems.length === 0}
                     >
-                      Comprar
+                      Realizar Pedido
                     </Button>
                   </div>
                   {loading && <LoadingBox></LoadingBox>}

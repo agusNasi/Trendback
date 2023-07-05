@@ -2,20 +2,18 @@ import express from 'express';
 import path from 'path';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import seedRouter from './routers/seedRoutes.js';
-import productRouter from './routers/productRoutes.js';
-import userRouter from './routers/userRoutes.js';
-import orderRouter from './routers/orderRoutes.js';
-import uploadRouter from './routers/uploadRoutes.js';
+import seedRouter from './routes/seedRoutes.js';
+import productRouter from './routes/productRoutes.js';
+import userRouter from './routes/userRoutes.js';
+import orderRouter from './routes/orderRoutes.js';
+import uploadRouter from './routes/uploadRoutes.js';
 
 dotenv.config();
-
-//Connect to DB
 
 mongoose
   .connect(process.env.MONGODB_URI)
   .then(() => {
-    console.log('connected to DB');
+    console.log('connected to db');
   })
   .catch((err) => {
     console.log(err.message);
@@ -37,16 +35,16 @@ app.use('/api/users', userRouter);
 app.use('/api/orders', orderRouter);
 
 const __dirname = path.resolve();
-app.use(express.static(path.join(__dirname, '/client/build')));
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '/client/build/index.html'));
-});
+app.use(express.static(path.join(__dirname, '/frontend/build')));
+app.get('*', (req, res) =>
+  res.sendFile(path.join(__dirname, '/frontend/build/index.html'))
+);
 
 app.use((err, req, res, next) => {
   res.status(500).send({ message: err.message });
 });
 
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-  console.log(`server ready on port => ${PORT}`);
+const port = process.env.PORT || 4000;
+app.listen(port, () => {
+  console.log(`serve at http://localhost:${port}`);
 });

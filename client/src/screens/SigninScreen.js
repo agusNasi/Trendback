@@ -1,45 +1,37 @@
 import Axios from 'axios';
-import { useLocation, Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
-import { Helmet } from 'react-helmet-async';
 import Button from 'react-bootstrap/Button';
+import { Helmet } from 'react-helmet-async';
 import { useContext, useEffect, useState } from 'react';
-import { Store } from '../Store.js';
+import { Store } from '../Store';
 import { toast } from 'react-toastify';
-import { getError } from '../utils.js';
+import { getError } from '../utils';
 
-export default function SignupScreen() {
+export default function SigninScreen() {
   const navigate = useNavigate();
   const { search } = useLocation();
   const redirectInUrl = new URLSearchParams(search).get('redirect');
   const redirect = redirectInUrl ? redirectInUrl : '/';
 
-  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
 
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
-
   const submitHandler = async (e) => {
     e.preventDefault();
-    if (password !== confirmPassword) {
-      toast.error('Las contraseñas no son iguales');
-      return;
-    }
     try {
-      const { data } = await Axios.post('/api/users/signup', {
-        name,
+      const { data } = await Axios.post('/api/users/signin', {
         email,
         password,
       });
       ctxDispatch({ type: 'USER_SIGNIN', payload: data });
       localStorage.setItem('userInfo', JSON.stringify(data));
       navigate(redirect || '/');
-    } catch (error) {
-      toast.error(getError(error));
+    } catch (err) {
+      toast.error(getError(err));
     }
   };
 
@@ -48,21 +40,14 @@ export default function SignupScreen() {
       navigate(redirect);
     }
   }, [navigate, redirect, userInfo]);
+
   return (
     <Container className="small-container">
       <Helmet>
-        <title>Crear Cuenta</title>
+        <title>Iniciar Sesion</title>
       </Helmet>
-      <h1 className="my-3">Crear Cuenta</h1>
+      <h1 className="my-3">Iniciar Sesion</h1>
       <Form onSubmit={submitHandler}>
-        <Form.Group className="mb-3" controlId="name">
-          <Form.Label>Nombre</Form.Label>
-          <Form.Control
-            type="name"
-            required
-            onChange={(e) => setName(e.target.value)}
-          />
-        </Form.Group>
         <Form.Group className="mb-3" controlId="email">
           <Form.Label>Email</Form.Label>
           <Form.Control
@@ -79,20 +64,12 @@ export default function SignupScreen() {
             onChange={(e) => setPassword(e.target.value)}
           />
         </Form.Group>
-        <Form.Group className="mb-3" controlId="confirmPassword">
-          <Form.Label>Confirmar Contraseña</Form.Label>
-          <Form.Control
-            type="password"
-            required
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
-        </Form.Group>
         <div className="mb-3">
-          <Button type="submit">Crear cuenta</Button>
+          <Button type="submit">Iniciar Sesion</Button>
         </div>
         <div className="mb-3">
-          Ya tienes una cuenta?{' '}
-          <Link to={`/signin?redirect=${redirect}`}>Iniciar Sesion</Link>
+          No tienes cuenta?{' '}
+          <Link to={`/signup?redirect=${redirect}`}>Crear cuenta</Link>
         </div>
       </Form>
     </Container>

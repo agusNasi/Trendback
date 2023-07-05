@@ -36,6 +36,7 @@ const reducer = (state, action) => {
       };
     case 'UPLOAD_FAIL':
       return { ...state, loadingUpload: false, errorUpload: action.payload };
+
     default:
       return state;
   }
@@ -113,14 +114,13 @@ export default function ProductEditScreen() {
       dispatch({
         type: 'UPDATE_SUCCESS',
       });
-      toast.success('Product updated successfully');
+      toast.success('Producto actualizado exitosamente!');
       navigate('/admin/products');
     } catch (err) {
       toast.error(getError(err));
       dispatch({ type: 'UPDATE_FAIL' });
     }
   };
-
   const uploadFileHandler = async (e, forImages) => {
     const file = e.target.files[0];
     const bodyFormData = new FormData();
@@ -140,25 +140,27 @@ export default function ProductEditScreen() {
       } else {
         setImage(data.secure_url);
       }
-      toast.success('Image uploaded successfully. click Update to apply it');
+      toast.success(
+        'Imagen cargada con éxito. haga clic en Actualizar para aplicarlo'
+      );
     } catch (err) {
       toast.error(getError(err));
       dispatch({ type: 'UPLOAD_FAIL', payload: getError(err) });
     }
   };
-
   const deleteFileHandler = async (fileName, f) => {
     console.log(fileName, f);
     console.log(images);
     console.log(images.filter((x) => x !== fileName));
     setImages(images.filter((x) => x !== fileName));
-    toast.success('Image removed successfully. click Update to apply it');
+    toast.success(
+      'Imagen eliminada con éxito. haga clic en Actualizar para aplicarlo'
+    );
   };
-
   return (
     <Container className="small-container">
       <Helmet>
-        <title>Editar Producto {productId}</title>
+        <title>Editar Producto ${productId}</title>
       </Helmet>
       <h1>Editar Producto {productId}</h1>
 
@@ -201,13 +203,14 @@ export default function ProductEditScreen() {
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="imageFile">
-            <Form.Label>Actualizar imagen</Form.Label>
+            <Form.Label>Actualizar Imagen</Form.Label>
             <Form.Control type="file" onChange={uploadFileHandler} />
             {loadingUpload && <LoadingBox></LoadingBox>}
           </Form.Group>
+
           <Form.Group className="mb-3" controlId="additionalImage">
-            <Form.Label>Imagenes adicionales</Form.Label>
-            {images.length === 0 && <MessageBox>No imagen</MessageBox>}
+            <Form.Label>Imagenes Adicionales</Form.Label>
+            {images.length === 0 && <MessageBox>Sin Imagen</MessageBox>}
             <ListGroup variant="flush">
               {images.map((x) => (
                 <ListGroup.Item key={x}>
@@ -220,13 +223,14 @@ export default function ProductEditScreen() {
             </ListGroup>
           </Form.Group>
           <Form.Group className="mb-3" controlId="additionalImageFile">
-            <Form.Label>Actualizar imagen adicional</Form.Label>
+            <Form.Label>Actulizar imagenes adicionales</Form.Label>
             <Form.Control
               type="file"
               onChange={(e) => uploadFileHandler(e, true)}
             />
             {loadingUpload && <LoadingBox></LoadingBox>}
           </Form.Group>
+
           <Form.Group className="mb-3" controlId="category">
             <Form.Label>Categoria</Form.Label>
             <Form.Control

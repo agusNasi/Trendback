@@ -31,6 +31,7 @@ function reducer(state, action) {
       return { ...state, loadingPay: false };
     case 'PAY_RESET':
       return { ...state, loadingPay: false, successPay: false };
+
     case 'DELIVER_REQUEST':
       return { ...state, loadingDeliver: true };
     case 'DELIVER_SUCCESS':
@@ -102,7 +103,7 @@ export default function OrderScreen() {
           }
         );
         dispatch({ type: 'PAY_SUCCESS', payload: data });
-        toast.success('Orden pagada');
+        toast.success('Orden Pagada');
       } catch (err) {
         dispatch({ type: 'PAY_FAIL', payload: getError(err) });
         toast.error(getError(err));
@@ -150,7 +151,7 @@ export default function OrderScreen() {
         paypalDispatch({
           type: 'resetOptions',
           value: {
-            clientId: clientId,
+            'client-id': clientId,
             currency: 'USD',
           },
         });
@@ -179,7 +180,7 @@ export default function OrderScreen() {
         }
       );
       dispatch({ type: 'DELIVER_SUCCESS', payload: data });
-      toast.success('La orden fue entregada');
+      toast.success('Pedido Entregado');
     } catch (err) {
       toast.error(getError(err));
       dispatch({ type: 'DELIVER_FAIL' });
@@ -203,16 +204,17 @@ export default function OrderScreen() {
               <Card.Title>Envio</Card.Title>
               <Card.Text>
                 <strong>Nombre:</strong> {order.shippingAddress.fullName} <br />
-                <strong>Direccion de: </strong> {order.shippingAddress.address},
+                <strong>Direccion: </strong> {order.shippingAddress.address},
                 {order.shippingAddress.city}, {order.shippingAddress.postalCode}
                 ,{order.shippingAddress.country}
+                &nbsp;
               </Card.Text>
               {order.isDelivered ? (
                 <MessageBox variant="success">
-                  Entregado en {order.deliveredAt}
+                  Enviado el {order.deliveredAt}
                 </MessageBox>
               ) : (
-                <MessageBox variant="danger">No Entregado</MessageBox>
+                <MessageBox variant="danger">No enviado</MessageBox>
               )}
             </Card.Body>
           </Card>
@@ -227,7 +229,7 @@ export default function OrderScreen() {
                   Pagado el {order.paidAt}
                 </MessageBox>
               ) : (
-                <MessageBox variant="danger">No pagado</MessageBox>
+                <MessageBox variant="danger">No Pagado</MessageBox>
               )}
             </Card.Body>
           </Card>
@@ -261,7 +263,7 @@ export default function OrderScreen() {
         <Col md={4}>
           <Card className="mb-3">
             <Card.Body>
-              <Card.Title>Resumen del pedido</Card.Title>
+              <Card.Title>Resumen de Orden</Card.Title>
               <ListGroup variant="flush">
                 <ListGroup.Item>
                   <Row>
@@ -312,7 +314,7 @@ export default function OrderScreen() {
                     {loadingDeliver && <LoadingBox></LoadingBox>}
                     <div className="d-grid">
                       <Button type="button" onClick={deliverOrderHandler}>
-                        Entregar pedido
+                        Entregar Pedido
                       </Button>
                     </div>
                   </ListGroup.Item>

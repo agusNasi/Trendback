@@ -1,15 +1,15 @@
 import React, { useEffect, useReducer, useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
-import { getError } from '../utils';
 import { toast } from 'react-toastify';
+import { getError } from '../utils';
 import { Helmet } from 'react-helmet-async';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Button from 'react-bootstrap/Button';
+import Rating from '../components/Rating';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
-import Rating from '../components/Rating';
+import Button from 'react-bootstrap/Button';
 import Product from '../components/Product';
 import LinkContainer from 'react-router-bootstrap/LinkContainer';
 
@@ -106,7 +106,6 @@ export default function SearchScreen() {
   }, [category, error, order, page, price, query, rating]);
 
   const [categories, setCategories] = useState([]);
-
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -137,7 +136,7 @@ export default function SearchScreen() {
       </Helmet>
       <Row>
         <Col md={3}>
-          <h3>Categorias</h3>
+          <h3>Categoria</h3>
           <div>
             <ul>
               <li>
@@ -184,7 +183,7 @@ export default function SearchScreen() {
             </ul>
           </div>
           <div>
-            <h3>Reseñas</h3>
+            <h3>Reseñas Promedio</h3>
             <ul>
               {ratings.map((r) => (
                 <li key={r.name}>
@@ -192,7 +191,7 @@ export default function SearchScreen() {
                     to={getFilterUrl({ rating: r.rating })}
                     className={`${r.rating}` === `${rating}` ? 'text-bold' : ''}
                   >
-                    <Rating caption={' & up'} rating={r.rating}></Rating>
+                    <Rating caption={' para arriba'} rating={r.rating}></Rating>
                   </Link>
                 </li>
               ))}
@@ -201,7 +200,7 @@ export default function SearchScreen() {
                   to={getFilterUrl({ rating: 'all' })}
                   className={rating === 'all' ? 'text-bold' : ''}
                 >
-                  <Rating caption={' & up'} rating={0}></Rating>
+                  <Rating caption={' para arriba'} rating={0}></Rating>
                 </Link>
               </li>
             </ul>
@@ -217,7 +216,7 @@ export default function SearchScreen() {
               <Row className="justify-content-between mb-3">
                 <Col md={6}>
                   <div>
-                    {countProducts === 0 ? 'No' : countProducts} Resultados
+                    {countProducts === 0 ? 'No' : countProducts} Results
                     {query !== 'all' && ' : ' + query}
                     {category !== 'all' && ' : ' + category}
                     {price !== 'all' && ' : Price ' + price}
@@ -243,15 +242,15 @@ export default function SearchScreen() {
                       navigate(getFilterUrl({ order: e.target.value }));
                     }}
                   >
-                    <option value="newest">Mas reciente</option>
-                    <option value="lowest">Precio: Bajo a Alto</option>
-                    <option value="highest">Precio: Alto a Bajo</option>
-                    <option value="toprated">Reseñas</option>
+                    <option value="newest">Mas Recientes</option>
+                    <option value="lowest">Precio: Menor a Mayor</option>
+                    <option value="highest">Precio: Mayor a Menor</option>
+                    <option value="toprated">Reseñas Promedio</option>
                   </select>
                 </Col>
               </Row>
               {products.length === 0 && (
-                <MessageBox>Producto No Encontrado</MessageBox>
+                <MessageBox>Producto no Encontrado</MessageBox>
               )}
 
               <Row>

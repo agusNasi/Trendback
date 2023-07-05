@@ -8,6 +8,7 @@ import MessageBox from '../components/MessageBox';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
+import { Helmet } from 'react-helmet-async';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -25,7 +26,6 @@ const reducer = (state, action) => {
       return state;
   }
 };
-
 export default function DashboardScreen() {
   const [{ loading, summary, error }, dispatch] = useReducer(reducer, {
     loading: true,
@@ -53,6 +53,9 @@ export default function DashboardScreen() {
 
   return (
     <div>
+      <Helmet>
+        <title>Panel</title>
+      </Helmet>
       <h1>Panel</h1>
       {loading ? (
         <LoadingBox />
@@ -102,7 +105,7 @@ export default function DashboardScreen() {
           <div className="my-3">
             <h2>Ventas</h2>
             {summary.dailyOrders.length === 0 ? (
-              <MessageBox>No se vende</MessageBox>
+              <MessageBox>No hay ventas</MessageBox>
             ) : (
               <Chart
                 width="100%"
@@ -119,7 +122,7 @@ export default function DashboardScreen() {
           <div className="my-3">
             <h2>Categorias</h2>
             {summary.productCategories.length === 0 ? (
-              <MessageBox>Sin categoria</MessageBox>
+              <MessageBox>No hay categorias</MessageBox>
             ) : (
               <Chart
                 width="100%"

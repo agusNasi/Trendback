@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useReducer } from 'react';
 import { Helmet } from 'react-helmet-async';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
-import Button from 'react-bootstrap/Button';
 import { Store } from '../Store';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { getError } from '../utils';
+import Button from 'react-bootstrap/esm/Button';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -30,7 +30,6 @@ export default function OrderHistoryScreen() {
     loading: true,
     error: '',
   });
-
   useEffect(() => {
     const fetchData = async () => {
       dispatch({ type: 'FETCH_REQUEST' });
@@ -53,9 +52,10 @@ export default function OrderHistoryScreen() {
   return (
     <div>
       <Helmet>
-        <title>Historial de Orden</title>
+        <title>Historial de Ordenes</title>
       </Helmet>
-      <h1>Historial de orden</h1>
+
+      <h1>Historial de Ordenes</h1>
       {loading ? (
         <LoadingBox></LoadingBox>
       ) : error ? (
@@ -67,9 +67,9 @@ export default function OrderHistoryScreen() {
               <th>ID</th>
               <th>FECHA</th>
               <th>TOTAL</th>
-              <th>PAGADO</th>
-              <th>ENTREGADO</th>
-              <th>ORDEN</th>
+              <th>PAGO</th>
+              <th>ENVIADO</th>
+              <th>ACCIONES</th>
             </tr>
           </thead>
           <tbody>

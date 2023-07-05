@@ -1,10 +1,10 @@
 import React, { useContext, useReducer, useState } from 'react';
-import { Store } from '../Store';
 import { Helmet } from 'react-helmet-async';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import { getError } from '../utils';
+import { Store } from '../Store';
 import { toast } from 'react-toastify';
+import { getError } from '../utils';
 import axios from 'axios';
 
 const reducer = (state, action) => {
@@ -35,6 +35,10 @@ export default function ProfileScreen() {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    if (password !== confirmPassword) {
+      toast.error('Las contraseñas no coinciden');
+      return;
+    }
     try {
       const { data } = await axios.put(
         '/api/users/profile',
@@ -52,7 +56,7 @@ export default function ProfileScreen() {
       });
       ctxDispatch({ type: 'USER_SIGNIN', payload: data });
       localStorage.setItem('userInfo', JSON.stringify(data));
-      toast.success('Usuario actualizado correctamente!');
+      toast.success('Usuario actualizado exitosamente!');
     } catch (err) {
       dispatch({
         type: 'FETCH_FAIL',
@@ -93,7 +97,7 @@ export default function ProfileScreen() {
           />
         </Form.Group>
         <Form.Group className="mb-3" controlId="password">
-          <Form.Label>Confirmar contraseña</Form.Label>
+          <Form.Label>Confirma contraseña</Form.Label>
           <Form.Control
             type="password"
             onChange={(e) => setConfirmPassword(e.target.value)}

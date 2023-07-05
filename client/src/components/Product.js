@@ -1,13 +1,14 @@
-import { Link } from 'react-router-dom';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
+import { Link } from 'react-router-dom';
 import Rating from './Rating';
 import axios from 'axios';
 import { useContext } from 'react';
 import { Store } from '../Store';
 
-export default function Product(props) {
+function Product(props) {
   const { product } = props;
+
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const {
     cart: { cartItems },
@@ -18,7 +19,7 @@ export default function Product(props) {
     const quantity = existItem ? existItem.quantity + 1 : 1;
     const { data } = await axios.get(`/api/products/${item._id}`);
     if (data.countInStock < quantity) {
-      window.alert('Sorry. Product is out of stock');
+      window.alert('Lo siento. El producto está fuera de stock');
       return;
     }
     ctxDispatch({
@@ -34,9 +35,7 @@ export default function Product(props) {
       </Link>
       <Card.Body>
         <Link to={`/product/${product.slug}`}>
-          <Card.Title>
-            <p>{product.name}</p>
-          </Card.Title>
+          <Card.Title>{product.name}</Card.Title>
         </Link>
         <Rating rating={product.rating} numReviews={product.numReviews} />
         <Card.Text>${product.price}</Card.Text>
@@ -46,10 +45,11 @@ export default function Product(props) {
           </Button>
         ) : (
           <Button onClick={() => addToCartHandler(product)}>
-            Agregar al carrito
+            Agregar al Carrito
           </Button>
         )}
       </Card.Body>
     </Card>
   );
 }
+export default Product;

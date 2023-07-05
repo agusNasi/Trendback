@@ -20,9 +20,7 @@ export default function CartScreen() {
   const updateCartHandler = async (item, quantity) => {
     const { data } = await axios.get(`/api/products/${item._id}`);
     if (data.countInStock < quantity) {
-      window.alert(
-        'Lo sentimos, el producto no se encuentra en stock actualmente'
-      );
+      window.alert('Lo siento. El producto está fuera de stock');
       return;
     }
     ctxDispatch({
@@ -30,7 +28,6 @@ export default function CartScreen() {
       payload: { ...item, quantity },
     });
   };
-
   const removeItemHandler = (item) => {
     ctxDispatch({ type: 'CART_REMOVE_ITEM', payload: item });
   };
@@ -42,14 +39,14 @@ export default function CartScreen() {
   return (
     <div>
       <Helmet>
-        <title>Carrito de compras</title>
+        <title>Carrito</title>
       </Helmet>
-      <h1>Carrito de compra</h1>
+      <h1>Carrito</h1>
       <Row>
         <Col md={8}>
           {cartItems.length === 0 ? (
             <MessageBox>
-              El carrito esta vacio <Link to="/">Ir a la tienda</Link>
+              Carrito vacio <Link to="/">Ir a la tienda</Link>
             </MessageBox>
           ) : (
             <ListGroup>
@@ -66,11 +63,11 @@ export default function CartScreen() {
                     </Col>
                     <Col md={3}>
                       <Button
-                        variant="light"
-                        disabled={item.quantity === 1}
                         onClick={() =>
                           updateCartHandler(item, item.quantity - 1)
                         }
+                        variant="light"
+                        disabled={item.quantity === 1}
                       >
                         <i className="fas fa-minus-circle"></i>
                       </Button>{' '}
@@ -83,13 +80,13 @@ export default function CartScreen() {
                         disabled={item.quantity === item.countInStock}
                       >
                         <i className="fas fa-plus-circle"></i>
-                      </Button>{' '}
+                      </Button>
                     </Col>
                     <Col md={3}>${item.price}</Col>
                     <Col md={2}>
                       <Button
-                        variant="light"
                         onClick={() => removeItemHandler(item)}
+                        variant="light"
                       >
                         <i className="fas fa-trash"></i>
                       </Button>
@@ -119,7 +116,7 @@ export default function CartScreen() {
                       onClick={checkoutHandler}
                       disabled={cartItems.length === 0}
                     >
-                      Finalizar compra
+                      Continuar compra
                     </Button>
                   </div>
                 </ListGroup.Item>
